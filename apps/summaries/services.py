@@ -1,8 +1,8 @@
 # apps/summaries/services.py
-import openai
+from openai import OpenAI
 from django.conf import settings
 
-openai.api_key = settings.OPENAI_API_KEY
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 def generate_concept_summary(conversation_texts: list[str]) -> str:
     """
@@ -18,10 +18,8 @@ def generate_concept_summary(conversation_texts: list[str]) -> str:
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": "\n".join(conversation_texts)},
     ]
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # または "gpt-4"
-        messages=messages,
-        temperature=0.5,
-        max_tokens=500
-    )
+    response = client.chat.completions.create(model="gpt-3.5-turbo",  # または "gpt-4"
+    messages=messages,
+    temperature=0.5,
+    max_tokens=500)
     return response.choices[0].message.content.strip()

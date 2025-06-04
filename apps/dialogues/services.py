@@ -1,9 +1,9 @@
 # apps/dialogues/services.py
 import os
-import openai
+from openai import OpenAI
 from django.conf import settings
 
-openai.api_key = settings.OPENAI_API_KEY
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 def generate_gpt_response(prompt: str, conversation_history: list[dict]) -> str:
     """
@@ -17,10 +17,8 @@ def generate_gpt_response(prompt: str, conversation_history: list[dict]) -> str:
     ] + conversation_history + [
         {"role": "user", "content": prompt}
     ]
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # または "gpt-4"
-        messages=messages,
-        temperature=0.7,
-    )
+    response = client.chat.completions.create(model="gpt-3.5-turbo",  # または "gpt-4"
+    messages=messages,
+    temperature=0.7)
     # 一番最後のアシスタントメッセージを返す
     return response.choices[0].message.content.strip()

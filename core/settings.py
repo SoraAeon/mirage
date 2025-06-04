@@ -43,13 +43,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+     # 既存の自作アプリ…
     'apps.accounts',
     'apps.concepts',
     'apps.dialogues',
     'apps.gamification',
     'apps.questions',
-    'apps.summaries'
+    'apps.summaries',
+
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+
+# Crispy Forms のテンプレートパック
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,6 +72,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+STATIC_URL = '/static/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -74,9 +85,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.static',
             ],
         },
     },
+]
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # プロジェクト直下の static/ 以下を検索パスに含める
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'

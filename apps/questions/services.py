@@ -1,8 +1,8 @@
 # apps/questions/services.py
-import openai
+from openai import OpenAI
 from django.conf import settings
 
-openai.api_key = settings.OPENAI_API_KEY
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 def generate_question_answer(question_text: str, concept_summary: str) -> str:
     """
@@ -14,10 +14,8 @@ def generate_question_answer(question_text: str, concept_summary: str) -> str:
         {"role": "assistant", "content": concept_summary or "要約情報なし"},
         {"role": "user", "content": question_text},
     ]
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # または "gpt-4"
-        messages=messages,
-        temperature=0.6,
-        max_tokens=300
-    )
+    response = client.chat.completions.create(model="gpt-3.5-turbo",  # または "gpt-4"
+    messages=messages,
+    temperature=0.6,
+    max_tokens=300)
     return response.choices[0].message.content.strip()
