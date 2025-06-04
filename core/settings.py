@@ -15,6 +15,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+
+AUTH_USER_MODEL = 'accounts.User'
+LOGIN_REDIRECT_URL = '/accounts/profile/'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,7 +33,6 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 

@@ -1,0 +1,53 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+{% block title %}ホーム - Mirage{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="mt-4">ようこそ、Mirage へ</h1>
+    <p class="lead">
+      このアプリでは「自分の内的概念」を育て、他のユーザーと対話・共有することができます。まずは下のリンクから始めましょう！
+    </p>
+    <hr>
+
+    <div class="row">
+      <!-- 概念一覧へ -->
+      <div class="col-md-4 mb-3">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">公開概念一覧</h5>
+            <p class="card-text">他のユーザーが公開している概念を覗いてみましょう。</p>
+            <a href="{% url 'concepts:concept_list' %}" class="btn btn-primary mt-auto">一覧を見る</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 自分の概念編集へ -->
+      <div class="col-md-4 mb-3">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">自分の概念を編集</h5>
+            <p class="card-text">まずはあなた自身の「概念」を作成・編集しましょう。</p>
+            <a href="{% url 'concepts:my_concept' %}" class="btn btn-success mt-auto">編集画面へ</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- GPT チャットへ -->
+      <div class="col-md-4 mb-3">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">GPT と対話</h5>
+            <p class="card-text">“自分AI” を育てるために、今すぐ GPT と会話を始めましょう。</p>
+            <a href="{% url 'dialogues:chat' %}" class="btn btn-warning mt-auto">チャットを開始</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    <p class="text-muted">
+      まだアカウントがない方は <a href="{% url 'accounts:signup' %}">サインアップ</a>、すでにお持ちの方は <a href="{% url 'accounts:login' %}">ログイン</a> してください。
+    </p>
+  </div>
+{% endblock %}
