@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container">
+    <h2>{{ concept.title }}</h2>
+    <p>
+      <strong>オーナー:</strong> {{ concept.owner.username }}
+      {% if concept.is_public %}
+        <span class="badge bg-success">公開中</span>
+      {% else %}
+        <span class="badge bg-secondary">非公開</span>
+      {% endif %}
+    </p>
+    <p><small class="text-muted">作成: {{ concept.created_at }} ／ 最終更新: {{ concept.updated_at }}</small></p>
+    <hr>
+
+    <!-- 1) 概念の要約表示 -->
+    <h4>概念の概要・要約</h4>
+    {% if concept.summary %}
+      <div class="card mb-4">
+        <div class="card-body">
+          {{ concept.summary|linebreaks }}
+        </div>
+      </div>
+    {% else %}
+      <p class="text-muted">まだ要約が生成されていません。</p>
+    {% endif %}
+
+    <!-- 2) 他ユーザーからの質問一覧 -->
+    <h4>質問と回答</h4>
+    {% if concept.questions.exists %}
+      <div class="accordion" id="questionsAccordion">
+        {% for question in concept.questions.all %}
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="heading{{ question.id }}">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ question.id }}" aria-expanded="false" aria-controls="collapse{{ question.id }}">
+                Q: {{ question.question_text|truncatechars:50 }}
+                <small class="text-muted ms-2">— {{ question.asked_at }}</small>
+              </button>
+            </h2>
+            <div id="collapse{{ question.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ question.id }}" data-bs-parent="#questionsAccordion">
+              <div class="accordion-body">
+                <p><strong>回答:</strong></p>
+                {% if question.answer %}
+                  <div class="border rounded p-2 bg-light">
+                    {{ question.answer.answer_text|linebreaks }}
+                  </div>
+                  <p><small class="text-muted">回答日時: {{ question.answer.answered_at }}</small></p>
+                {% else %}
+                  <p class="text-danger">まだ回答が生成されていません。</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">まだ質問はありません。</p>
+    {% endif %}
+    <div class="mt-3">
+      <a href="{% url 'questions:ask_question' concept.pk %}" class="btn btn-outline-primary">質問を投稿する</a>
+    </div>
+
+    <hr>
+
+    <!-- 3) 対話の一部（任意） -->
+    <h4>最近の対話（最新５件）</h4>
+    {% if concept.dialogue_messages.exists %}
+      <ul class="list-group mb-4">
+        {% for msg in concept.dialogue_messages.all|slice:":5" %}
+          <li class="list-group-item {% if msg.sender == 'gpt' %}list-group-item-light{% endif %}">
+            {% if msg.sender == 'user' %}
+              <strong>あなた:</strong> {{ msg.message }}
+            {% else %}
+              <strong>AI:</strong> {{ msg.message }}
+            {% endif %}
+            <br>
+            <small class="text-muted">{{ msg.created_at }}</small>
+          </li>
+        {% endfor %}
+      </ul>
+      <a href="{% url 'dialogues:chat' %}" class="btn btn-outline-success">会話を続ける</a>
+    {% else %}
+      <p class="text-muted">まだ対話がありません。</p>
+      <a href="{% url 'dialogues:chat' %}" class="btn btn-outline-success">GPTと対話を始める</a>
+    {% endif %}
+  </div>
+{% endblock %}

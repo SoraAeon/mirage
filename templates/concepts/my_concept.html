@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="container">
+    <h2>自分の概念設定</h2>
+    <hr>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="mb-3">
+        {{ form.title.label_tag }}
+        {{ form.title }}
+        {% if form.title.help_text %}
+          <small class="form-text text-muted">{{ form.title.help_text }}</small>
+        {% endif %}
+        {{ form.title.errors }}
+      </div>
+      <div class="form-check mb-3">
+        {{ form.is_public }}
+        {{ form.is_public.label_tag }}
+        {% if form.is_public.help_text %}
+          <small class="form-text text-muted">{{ form.is_public.help_text }}</small>
+        {% endif %}
+        {{ form.is_public.errors }}
+      </div>
+      <button type="submit" class="btn btn-primary">保存する</button>
+    </form>
+
+    <hr>
+    <h3>現在の設定</h3>
+    <p><strong>タイトル:</strong> {{ object.title }}</p>
+    <p>
+      <strong>公開設定:</strong>
+      {% if object.is_public %}
+        <span class="badge bg-success">公開中</span>
+      {% else %}
+        <span class="badge bg-secondary">非公開</span>
+      {% endif %}
+    </p>
+    <p><small class="text-muted">最終更新: {{ object.updated_at }}</small></p>
+
+    <hr>
+    <a href="{% url 'dialogues:chat' %}" class="btn btn-outline-success">今すぐGPTと対話する</a>
+  </div>
+{% endblock %}

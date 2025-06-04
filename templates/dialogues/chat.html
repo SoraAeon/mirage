@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>あなたの「概念」：{{ concept.title }}</h2>
+
+  <div id="chat-box" style="border:1px solid #ccc; padding:10px; max-height:400px; overflow-y:scroll;">
+    {% for msg in messages %}
+      <div style="margin-bottom: 8px;">
+        {% if msg.sender == "user" %}
+          <strong>あなた:</strong> {{ msg.message }}<br>
+          <small class="text-muted">{{ msg.created_at }}</small>
+        {% else %}
+          <strong>AI:</strong> {{ msg.message }}<br>
+          <small class="text-muted">{{ msg.created_at }}</small>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>まだ対話が始まっていません。メッセージを入力して「概念」を育てましょう。</p>
+    {% endfor %}
+  </div>
+
+  <form method="post" style="margin-top: 10px;">
+    {% csrf_token %}
+    <textarea name="message" rows="3" style="width:100%;" placeholder="メッセージを入力…"></textarea>
+    <button type="submit" class="btn btn-primary" style="margin-top: 5px;">送信</button>
+  </form>
+
+  <hr>
+  <h3>最新の要約</h3>
+  <div style="background:#f9f9f9; padding:10px; border-radius:4px;">
+    {{ concept.summary|default:"要約がまだ生成されていません。" }}
+  </div>
+{% endblock %}
