@@ -28,3 +28,10 @@ urlpatterns = [
     path('questions/', include('apps.questions.urls')),
     # path('summaries/', include('apps.summaries.urls')),
 ]
+
+# ★開発環境時のみ MEDIA_URL → MEDIA_ROOT を配信するよう指定
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
