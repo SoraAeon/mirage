@@ -3,9 +3,7 @@ from django.db import models
 from django.conf import settings
 
 class Concept(models.Model):
-    """
-    ユーザーが作成・育成する「概念」を表現するモデル
-    """
+    # ユーザーが作成・育成する「概念」を表現するモデル
     owner = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -15,7 +13,6 @@ class Concept(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # “概念” の概要。GPT要約結果を随時更新していく想定
-    summary = models.TextField(blank=True)
     persona_summary = models.TextField(blank=True)
     # プライバシー設定など
     is_public = models.BooleanField(default=True)

@@ -3,51 +3,64 @@
 {% block title %}ホーム - Mirage{% endblock %}
 
 {% block content %}
-  <div class="container">
-    <h1 class="mt-4">ようこそ、Mirage へ</h1>
-    <p class="lead">
-      このアプリでは「自分の概念」を育て、他のユーザーと対話・共有することができます。まずは下のリンクから始めましょう！
+  <div class="container py-5">
+    <h1 class="mb-4">ようこそ、Mirageへ</h1>
+    <p class="lead mb-4">
+      Mirageは「あなた自身のペルソナ（自分AI）」を育てる対話アプリです。<br>
+      話せば話すほど、あなたそっくりなAIができあがります。
     </p>
-    <hr>
 
-    <div class="row">
-      <!-- 概念一覧へ -->
-      <div class="col-md-4 mb-3">
-        <div class="card h-100">
+    <div class="row mb-5">
+      <!-- 自分のペルソナと対話 -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title">公開概念一覧</h5>
-            <p class="card-text">他のユーザーが公開している概念を覗いてみましょう。</p>
-            <a href="{% url 'concepts:concept_list' %}" class="btn btn-primary mt-auto">一覧を見る</a>
+            <h5 class="card-title mb-3">自分のペルソナと話す</h5>
+            <p class="card-text mb-4">AI化された「あなた自身」との対話体験。<br>
+              ペルソナに自分の価値観や悩み、日々の出来事を伝えてみましょう。</p>
+            <a href="{% url 'dialogues:persona_chat' %}" class="btn btn-primary mt-auto">会話をはじめる</a>
           </div>
         </div>
       </div>
 
-      <!-- 自分の概念編集へ -->
-      <div class="col-md-4 mb-3">
-        <div class="card h-100">
+      <!-- 他のペルソナとゲスト対話 -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title">自分の概念を編集</h5>
-            <p class="card-text">まずはあなた自身の「概念」を作成・編集しましょう。</p>
-            <a href="{% url 'concepts:my_concept' %}" class="btn btn-success mt-auto">編集画面へ</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- GPT チャットへ -->
-      <div class="col-md-4 mb-3">
-        <div class="card h-100">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">GPT と対話</h5>
-            <p class="card-text">“自分AI” を育てるために、今すぐ GPT と会話を始めましょう。</p>
-            <a href="{% url 'dialogues:chat' %}" class="btn btn-warning mt-auto">チャットを開始</a>
+            <h5 class="card-title mb-3">他のペルソナと対話（ゲスト）</h5>
+            <p class="card-text mb-4">他のユーザーのペルソナにも質問や相談ができます。<br>
+              気になるペルソナのIDがあれば入力して体験できます。</p>
+            <form method="get" action="{% url 'dialogues:guest_persona_chat' concept_id=0 %}" class="d-flex align-items-end">
+              <div>
+                <label for="concept_id" class="form-label mb-1">ペルソナID</label>
+                <input type="number" min="1" name="concept_id" id="concept_id" class="form-control" placeholder="例: 2" required>
+              </div>
+              <button type="submit" class="btn btn-secondary ms-2">ゲスト対話</button>
+            </form>
           </div>
         </div>
       </div>
     </div>
 
     <hr>
-    <p class="text-muted">
-      まだアカウントがない方は <a href="{% url 'accounts:signup' %}">サインアップ</a>、すでにお持ちの方は <a href="{% url 'accounts:login' %}">ログイン</a> してください。
-    </p>
+    <div class="mt-4 text-muted">
+      {% if user.is_authenticated %}
+        ようこそ、{{ user.username }} さん！
+      {% else %}
+        <a href="{% url 'accounts:signup' %}">サインアップ</a> または
+        <a href="{% url 'accounts:login' %}">ログイン</a>してご利用ください。
+      {% endif %}
+    </div>
   </div>
+
+  <script>
+    // ゲスト対話フォームを concept_id を指定したURLに遷移させる
+    document.querySelector('form[action*="guest_persona_chat"]').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var id = document.getElementById('concept_id').value;
+      if (id) {
+        window.location.href = "{% url 'dialogues:guest_persona_chat' concept_id=9999 %}".replace('9999', id);
+      }
+    });
+  </script>
 {% endblock %}

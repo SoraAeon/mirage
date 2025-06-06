@@ -1,10 +1,10 @@
 # apps/dialogues/urls.py
 from django.urls import path
-from . import views
+from .views import PersonaChatView, GuestPersonaChatView
 
 app_name = "dialogues"
 
 urlpatterns = [
-    path("chat/", views.ChatView.as_view(), name="chat"),
-    path("clone/<int:concept_id>/", views.CloneChatView.as_view(), name="clone_chat"),
+    path("chat/", PersonaChatView.as_view(), name="persona_chat"),
+    path("guest/<int:concept_id>/", GuestPersonaChatView.as_view(), name="guest_persona_chat"),
 ]

@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'apps.concepts',
     'apps.dialogues',
     'apps.gamification',
-    'apps.questions',
     'apps.summaries',
 
     'crispy_forms',

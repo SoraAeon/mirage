@@ -22,10 +22,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('accounts/', include('apps.accounts.urls')),
-    path('concepts/', include('apps.concepts.urls')),
+    # path('concepts/', include('apps.concepts.urls')),
     path('dialogues/', include('apps.dialogues.urls')),
     # path('gamification/', include('apps.gamification.urls')),
-    path('questions/', include('apps.questions.urls')),
     # path('summaries/', include('apps.summaries.urls')),
 ]
 

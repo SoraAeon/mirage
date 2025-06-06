@@ -18,7 +18,7 @@ class ConceptSummary(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.concept.owner.username} の要約 ({self.snapshot_at.date()})"
+        return f"{self.concept.owner.username} の要約 ({self.snapshot_at.strftime('%Y-%m-%d %H:%M')})"
 
     class Meta:
         ordering = ["-snapshot_at"]
