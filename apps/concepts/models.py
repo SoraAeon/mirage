@@ -16,6 +16,7 @@ class Concept(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     # “概念” の概要。GPT要約結果を随時更新していく想定
     summary = models.TextField(blank=True)
+    persona_summary = models.TextField(blank=True)
     # プライバシー設定など
     is_public = models.BooleanField(default=True)
 

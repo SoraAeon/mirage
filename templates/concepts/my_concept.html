@@ -1,45 +1,47 @@
+<!-- templates/concepts/my_concept.html -->
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+
+{% block title %}マイ・コンセプトを編集{% endblock %}
+
 {% block content %}
   <div class="container">
-    <h2>自分の概念設定</h2>
+    <h2>マイ・コンセプトを編集</h2>
     <hr>
+
+    <!-- 1) 編集フォーム -->
     <form method="post">
       {% csrf_token %}
-      {{ form.non_field_errors }}
-      <div class="mb-3">
-        {{ form.title.label_tag }}
-        {{ form.title }}
-        {% if form.title.help_text %}
-          <small class="form-text text-muted">{{ form.title.help_text }}</small>
-        {% endif %}
-        {{ form.title.errors }}
-      </div>
-      <div class="form-check mb-3">
-        {{ form.is_public }}
-        {{ form.is_public.label_tag }}
-        {% if form.is_public.help_text %}
-          <small class="form-text text-muted">{{ form.is_public.help_text }}</small>
-        {% endif %}
-        {{ form.is_public.errors }}
-      </div>
+      {{ form|crispy }}
       <button type="submit" class="btn btn-primary">保存する</button>
     </form>
 
-    <hr>
-    <h3>現在の設定</h3>
-    <p><strong>タイトル:</strong> {{ object.title }}</p>
-    <p>
-      <strong>公開設定:</strong>
-      {% if object.is_public %}
-        <span class="badge bg-success">公開中</span>
-      {% else %}
-        <span class="badge bg-secondary">非公開</span>
-      {% endif %}
-    </p>
-    <p><small class="text-muted">最終更新: {{ object.updated_at }}</small></p>
+    <!-- 2) 現在の設定表示（そのまま残す） -->
+    <div class="mt-4">
+      <h4>現在の設定</h4>
+      <p><strong>タイトル：</strong> {{ object.title }}</p>
+      <p><strong>公開ステータス：</strong>
+        {% if object.is_public %}公開{% else %}非公開{% endif %}
+      </p>
+      <p><strong>最終更新：</strong> {{ object.updated_at|date:"Y年m月d日 H:i" }}</p>
+    </div>
 
-    <hr>
-    <a href="{% url 'dialogues:chat' %}" class="btn btn-outline-success">今すぐGPTと対話する</a>
+    <!-- 3) 自動生成されたペルソナ要約をここに追加 -->
+    <div class="mt-4">
+      <h4>クローン学習用 要約（Persona Summary）</h4>
+      {% if object.persona_summary %}
+        <div class="card">
+          <div class="card-body">
+            <!-- 改行を反映して表示 -->
+            <pre style="white-space: pre-wrap; font-family: inherit;">
+{{ object.persona_summary }}
+            </pre>
+          </div>
+        </div>
+      {% else %}
+        <p class="text-muted">まだペルソナ要約は生成されていません。対話を重ねると自動的に更新されます。</p>
+      {% endif %}
+    </div>
+
   </div>
 {% endblock %}

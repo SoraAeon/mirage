@@ -28,7 +28,9 @@ class MyConceptView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         # ログインユーザーのConcept を取得（存在しなければ作成）
-        concept, created = Concept.objects.get_or_create(owner=self.request.user, defaults={"title": f"{self.request.user.username} の概念"})
+        concept, created = Concept.objects.get_or_create(
+            owner=self.request.user, 
+            defaults={"title": f"{self.request.user.username} の概念"})
         return concept
 
 class ConceptDetailView(DetailView):

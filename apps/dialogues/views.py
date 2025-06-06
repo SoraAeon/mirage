@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.concepts.models import Concept
 from .models import DialogueMessage, DialogueSession
 from .services import generate_gpt_response, generate_clone_response
+from apps.summaries.services import generate_persona_summary
 from apps.summaries.services import generate_concept_summary
 from django.utils import timezone
 
@@ -29,12 +30,12 @@ class ChatView(LoginRequiredMixin, View):
         )
 
         # 3) そのセッションに紐づくメッセージ群を取得
-        messages = session.messages.all()
+        chat_messages = session.messages.all()
 
         return render(request, self.template_name, {
             "concept": concept,
             "session": session,
-            "messages": messages
+            "chat_messages": chat_messages
         })
 
     def post(self, request):
@@ -58,13 +59,18 @@ class ChatView(LoginRequiredMixin, View):
             content=user_input
         )
 
-        # 4) GPT によるクローン応答を生成し、保存
-        clone_reply = generate_clone_response(session, user_input)
+        # 4) GPT によるクローン応答を生成し、保存（共感・聞き役モード＝is_self=True）
+        clone_reply = generate_clone_response(session, user_input, is_self=True)
         DialogueMessage.objects.create(
             session=session,
             sender="clone",
             content=clone_reply
         )
+
+        # 「発言数が一定以上なら要約を更新する」例（ここでは 5 件以上）
+        total_messages = session.messages.count()
+        if total_messages >= 5:
+            generate_persona_summary(concept)
 
         return redirect("dialogues:chat")
 
@@ -90,8 +96,8 @@ class CloneChatView(LoginRequiredMixin, View):
                 owner=concept.owner, concept=concept, is_persistent=False
             )
 
-        messages = session.messages.all()
-        return render(request, self.template_name, {"concept": concept, "session": session, "messages": messages})
+        chat_messages = session.messages.all()
+        return render(request, self.template_name, {"concept": concept, "session": session, "chat_messages": chat_messages})
 
     def post(self, request, concept_id):
         concept = get_object_or_404(Concept, pk=concept_id, is_public=True)

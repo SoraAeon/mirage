@@ -8,7 +8,7 @@
     <hr>
 
     <div id="chat-box" style="border:1px solid #ccc; padding:10px; max-height:400px; overflow-y:scroll;">
-      {% for msg in messages %}
+      {% for msg in chat_messages %}
         <div class="mb-3">
           {% if msg.sender == "user" %}
             <strong>あなた:</strong> {{ msg.content }}<br>
@@ -18,11 +18,10 @@
             <small class="text-muted">{{ msg.timestamp }}</small>
           {% endif %}
         </div>
-      {% empty %}
-        <p class="text-muted">まだ対話が始まっていません。メッセージを入力してクローンを育てましょう。</p>
-      {% endfor %}
-    </div>
-
+        {% empty %}
+      <p class="text-muted">まだ対話が始まっていません。メッセージを入力してクローンを育てましょう。</p>
+    {% endfor %}
+  </div>
     <form method="post" class="mt-3">
       {% csrf_token %}
       <div class="mb-3">
@@ -31,4 +30,16 @@
       <button type="submit" class="btn btn-primary">送信</button>
     </form>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var chatBox = document.getElementById("chat-box");
+    if (chatBox) {
+      // scrollHeight は中の全長、clientHeight は表示可能な高さ
+      chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
+    }
+  });
+</script>
 {% endblock %}
