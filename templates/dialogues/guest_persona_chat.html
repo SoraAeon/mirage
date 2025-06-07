@@ -1,26 +1,26 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% block title %}{{ concept.title }} のクローンと対話{% endblock %}
+{% block title %}{{ concept.title }} のペルソナと対話{% endblock %}
 
 {% block content %}
   <div class="container">
-    <h2>{{ concept.title }} さんのデジタルクローンと対話</h2>
+    <h2>{{ concept.title }} と対話</h2>
     <p class="text-muted">この会話ログは、{% if request.user == concept.owner %}あなたのアカウントに保存されます。{% else %}一時的にのみ保存されます。{% endif %}</p>
     <hr>
 
     <div id="chat-box" style="border:1px solid #ccc; padding:10px; max-height:400px; overflow-y:scroll;">
-      {% for msg in messages %}
+      {% for msg in chat_messages %}
         <div class="mb-3">
           {% if msg.sender == "user" %}
             <strong>あなた:</strong> {{ msg.content }}<br>
             <small class="text-muted">{{ msg.timestamp }}</small>
           {% else %}
-            <strong>クローン:</strong> {{ msg.content }}<br>
+            <strong>{{ concept.title }}:</strong> {{ msg.content }}<br>
             <small class="text-muted">{{ msg.timestamp }}</small>
           {% endif %}
         </div>
       {% empty %}
-        <p class="text-muted">まだ対話が始まっていません。メッセージを入力してクローンを育てましょう。</p>
+        <p class="text-muted">まだ対話が始まっていません。{{ concept.title }}に質問してみましょう。</p>
       {% endfor %}
     </div>
 

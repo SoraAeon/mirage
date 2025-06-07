@@ -25,38 +25,36 @@ def generate_gpt_response(prompt: str, conversation_history: list[dict]) -> str:
     return response.choices[0].message.content.strip()
 
 def build_persona_prompt(session: PersonaSession, user_input: str, is_self: bool = False):
-    """
-    ペルソナとのチャット用プロンプトを生成。
-    - is_self=True: 本人によるペルソナ会話
-    - is_self=False: ゲストによる会話
-    """
     is_first_turn = not session.messages.exists()
     owner_name = session.owner.display_name or session.owner.username
     persona_summary = generate_persona_summary(session.concept)
 
     if is_self:
+        # 本人チャット
         base_system = (
             f"あなたは{owner_name}さんの『ペルソナ』です。\n"
             "今は“共感と聞き役、引き出し役”として振る舞ってください。"
-            "ユーザー（＝本人）が話しかけてきたら、"
-            "まず共感の言葉をかけてから、優しく話を深めるための質問をしてください。"
-            "絶対に教えたり提案したりせず、まずはユーザーの内面を引き出すことに集中してください。"
+            "ユーザー（＝本人）が話しかけてきたら、まず共感してから、優しく話を深める質問をしてください。"
+            "絶対に提案や助言はせず、相手の内面を引き出すことに集中してください。"
         )
         if persona_summary:
             base_system += f"\n\nなお、以下は現在あなた（ペルソナ）が学習している本人の特徴です：\n{persona_summary}"
         system_prompt = base_system
     else:
+        # ★ゲストチャット用プロンプト
         base_system = (
             f"あなたは{owner_name}さんの『ペルソナ』です。\n"
-            "以下に示す“この人らしさ”を反映して回答してください。"
+            "ゲストからの質問や相談に対し、{owner_name}さんらしく丁寧に、"
+            "自分自身の経験や価値観、信念、個性を伝える役割で振る舞ってください。"
+            "ゲストの発言には誠実に答え、なるべく質問返しや逆質問はせず、"
+            "自分のこと・自分の考えや気持ちを“説明”するように答えてください。"
         )
+        if persona_summary:
+            base_system += f"\n\nペルソナの参考情報：\n{persona_summary}"
+        system_prompt = base_system
+
         if is_first_turn:
-            first_turn_msg = (
-                "はじめまして。私はあなたのペルソナです。"
-                "これからあなたの価値観や口癖、好み、信念などを学び、一緒に成長していきたいと思っています。"
-                "まずはご自身のこと（自己紹介、趣味、価値観など）を教えていただけますか？"
-            )
-            system_prompt = base_system + "\n\n" + persona_summary + "\n\n" + first_turn_msg
+            system_prompt += "\n\nはじめまして。気になることがあれば何でも質問してください。"
         else:
             system_prompt = base_system + "\n\n" + persona_summary
 

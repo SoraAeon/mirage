@@ -30,7 +30,7 @@
             <h5 class="card-title mb-3">他のペルソナと対話（ゲスト）</h5>
             <p class="card-text mb-4">他のユーザーのペルソナにも質問や相談ができます。<br>
               気になるペルソナのIDがあれば入力して体験できます。</p>
-            <form method="get" action="{% url 'dialogues:guest_persona_chat' concept_id=0 %}" class="d-flex align-items-end">
+            <form method="get" action="{% url 'dialogues:guest_persona_chat' concept_slug='slug_example' %}" class="d-flex align-items-end">
               <div>
                 <label for="concept_id" class="form-label mb-1">ペルソナID</label>
                 <input type="number" min="1" name="concept_id" id="concept_id" class="form-control" placeholder="例: 2" required>
@@ -59,7 +59,7 @@
       event.preventDefault();
       var id = document.getElementById('concept_id').value;
       if (id) {
-        window.location.href = "{% url 'dialogues:guest_persona_chat' concept_id=9999 %}".replace('9999', id);
+        window.location.href = "{% url 'dialogues:guest_persona_chat' concept_slug='slug_example' %}".replace('slug_example', id);
       }
     });
   </script>
