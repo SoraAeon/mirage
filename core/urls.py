@@ -1,17 +1,11 @@
-from django import admin
+from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from apps.worldmap.views import AreaViewSet, UserLocationViewSet
-from apps.community.views import MessageViewSet
-
-router = DefaultRouter()
-router.register(r'areas', AreaViewSet)
-router.register(r'user-locations', UserLocationViewSet, basename='userlocation')
-router.register(r'messages', MessageViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('api/worldmap/', include('apps.worldmap.urls')),
+    path('api/community/', include('apps.community.urls')),
+    path('api/quests/', include('apps.quests.urls')),
 
     # path('', TemplateView.as_view(template_name='home.html'), name='home'),
     # path('accounts/', include('apps.accounts.urls')),

@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from worldmap.models import Area
+from apps.worldmap.models import Area
 
 class Message(models.Model):
     """
