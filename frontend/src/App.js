@@ -1,10 +1,11 @@
 import React from 'react';
-import VillagePage from './pages/VillagePage';
+import VillageMap from './components/VillageMap';
 
 function App() {
   return (
     <div>
-      <VillagePage />
+      <h1>開発者の村</h1>
+      <VillageMap />
     </div>
   );
 }
