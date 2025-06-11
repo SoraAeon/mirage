@@ -24,8 +24,13 @@ urlpatterns = [
     path('accounts/', include('apps.accounts.urls')),
     # path('concepts/', include('apps.concepts.urls')),
     path('dialogues/', include('apps.dialogues.urls')),
-    # path('gamification/', include('apps.gamification.urls')),
     # path('summaries/', include('apps.summaries.urls')),
+
+    # path('community/', include('apps.community.urls')),
+    # path('feedback/', include('apps.feedback.urls')),
+    # path('quests/', include('apps.quests.urls')),
+    # path('ranking/', include('apps.ranking.urls')),
+    # path('worldmap/', include('apps.worldmap.urls')),
 ]
 
 # ★開発環境時のみ MEDIA_URL → MEDIA_ROOT を配信するよう指定

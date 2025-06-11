@@ -51,8 +51,13 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.concepts',
     'apps.dialogues',
-    'apps.gamification',
     'apps.summaries',
+
+    'apps.community',
+    'apps.feedback',
+    'apps.quests',
+    'apps.ranking',
+    'apps.worldmap',
 
     'crispy_forms',
     'crispy_bootstrap5',
