@@ -1,13 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const HomePage = () => (
-  <div>
-    <h1>Welcome to RealPG!</h1>
-    <ul>
-      <li><Link to="/village">開発者の村</Link></li>
-      <li><Link to="/quests">人生ツリー</Link></li>
-    </ul>
-  </div>
-);
+function HomePage() {
+  return (
+    <div style={{ padding: "32px" }}>
+      <h1>RealPG: 行動で世界を変えるSNS</h1>
+      <p>やってみたい行動（クエスト）をシェアして、人生をもっと面白くしよう！</p>
+      <Link to="/quests">
+        <button style={{ fontSize: "1.2em", padding: "12px 24px" }}>
+          クエスト一覧を見る
+        </button>
+      </Link>
+    </div>
+  );
+}
+
 export default HomePage;

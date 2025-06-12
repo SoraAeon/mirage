@@ -15,8 +15,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-
-AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = '/accounts/profile/'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,28 +45,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-     # Matter関連
     'apps.accounts',
-    'apps.concepts',
-    'apps.dialogues',
-    'apps.summaries',
-    'crispy_forms',
-    'crispy_bootstrap5',
-
-    # RealPG関連
-    'apps.community',
-    'apps.feedback',
     'apps.quests',
-    'apps.ranking',
-    'apps.worldmap',
 
     'rest_framework',
     'corsheaders', 
 ]
 
-# Crispy Forms のテンプレートパック
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

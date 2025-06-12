@@ -1,26 +1,17 @@
-# apps/accounts/models.py
-
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.conf import settings
 
-class User(AbstractUser):
-    """
-    カスタムユーザーモデル。
-    - username, email, password などは AbstractUser が持つ
-    - ここでは表示名とプロフィール画像フィールドを追加
-    """
-    display_name = models.CharField(
-        max_length=50,
-        blank=True,
-        help_text="サイト内で表示したい名前を入力してください。"
-    )
-    avatar = models.ImageField(
-        upload_to='avatars/',
-        null=True,
-        blank=True,
-        help_text="プロフィール画像をアップロード（任意）"
-    )
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
+    display_name = models.CharField(max_length=100, blank=True)
+    bio = models.TextField(blank=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    points = models.IntegerField(default=0)
+    exp = models.IntegerField(default=0)
+    level = models.IntegerField(default=1)
+
+    # スキルはタグ型 or 別モデルで紐付けてもOK！
+    skills = models.CharField(max_length=255, blank=True, help_text="カンマ区切り")
 
     def __str__(self):
-        # display_name が設定されていればそちらを優先して表示
-        return self.display_name or self.username
+        return self.display_name or self.user.username

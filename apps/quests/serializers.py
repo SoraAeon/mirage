@@ -1,16 +1,16 @@
 from rest_framework import serializers
-from .models import ChoiceNode, UserProgress
+from .models import Quest, QuestAchievement
 
-class ChoiceNodeSerializer(serializers.ModelSerializer):
-    next_choices = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-
+class QuestSerializer(serializers.ModelSerializer):
+    creator_name = serializers.CharField(source='creator.username', read_only=True)
     class Meta:
-        model = ChoiceNode
-        fields = ['id', 'name', 'description', 'next_choices']
+        model = Quest
+        fields = ['id', 'title', 'description', 'tags', 'category', 'difficulty', 'creator', 'creator_name', 'created_at']
 
-class UserProgressSerializer(serializers.ModelSerializer):
-    node = ChoiceNodeSerializer()
-
+class QuestAchievementSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    quest_title = serializers.CharField(source='quest.title', read_only=True)
     class Meta:
-        model = UserProgress
-        fields = ['id', 'user', 'node', 'reached_at']
+        model = QuestAchievement
+        fields = ['id', 'user', 'user_name', 'quest', 'quest_title', 'comment', 'proof_image', 'achieved_at']
+        read_only_fields = ['user', 'user_name', 'quest_title', 'achieved_at']
