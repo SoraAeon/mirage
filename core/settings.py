@@ -47,15 +47,23 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-     # 既存の自作アプリ…
+     # Matter関連
     'apps.accounts',
     'apps.concepts',
     'apps.dialogues',
-    'apps.gamification',
     'apps.summaries',
-
     'crispy_forms',
     'crispy_bootstrap5',
+
+    # RealPG関連
+    'apps.community',
+    'apps.feedback',
+    'apps.quests',
+    'apps.ranking',
+    'apps.worldmap',
+
+    'rest_framework',
+    'corsheaders', 
 ]
 
 # Crispy Forms のテンプレートパック
