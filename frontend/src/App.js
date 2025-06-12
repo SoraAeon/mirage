@@ -1,12 +1,18 @@
 import React from 'react';
-import VillageMap from './components/VillageMap';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import VillagePage from './pages/VillagePage';
+import QuestsPage from './pages/QuestsPage'; // 新しく作る予定の画面
+import HomePage from './pages/HomePage';     // トップページなど
 
 function App() {
   return (
-    <div>
-      <h1>（開発者の村）Creator's Village</h1>
-      <VillageMap />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/village" element={<VillagePage />} />
+        <Route path="/quests" element={<QuestsPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
