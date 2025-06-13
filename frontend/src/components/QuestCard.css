@@ -1,0 +1,15 @@
+.quest-card {
+  border: 2px solid #b9935a;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(100, 60, 0, 0.18), 0 2px 6px #d3b889;
+  margin: 24px auto;
+  padding: 250px 0px;
+  width: 90%;
+  max-width: 400px;
+  transform: scale(0.7);
+  font-family: 'Caveat', 'serif', cursive;
+  color: #4c3200;
+  position: relative;
+  /* カードを“掲示板の上”に見せたいとき */
+  z-index: 10;
+}

@@ -42,7 +42,7 @@ class RecommendedQuestView(APIView):
         recommended = recommended[:3]
 
         # Sponsored枠も最大2件（ここは好きに調整してOK）
-        sponsored_quests = Quest.objects.exclude(id__in=achieved_quest_ids).filter(is_sponsored=True)[:2]
+        sponsored_quests = Quest.objects.exclude(id__in=achieved_quest_ids).filter(is_sponsored=True)[:1]
 
         return Response({
             "recommended": QuestSerializer(recommended, many=True).data,

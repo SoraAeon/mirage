@@ -1,0 +1,10 @@
+.quest-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0px;
+  justify-items: center;
+  align-items: start;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0px 0;
+}
