@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import JoinQuestButton from '../components/JoinQuestButton';
 import QuestPostForm from '../components/QuestPostForm';
 
-function QuestsPage() {
+function QuestsPage({ token }) {
   const [quests, setQuests] = useState([]);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function QuestsPage() {
         ))}
       </ul>
       <hr />
-      <QuestPostForm />
+      <QuestPostForm token={token} />
     </div>
   );
 }

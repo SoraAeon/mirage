@@ -15,3 +15,8 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.display_name or self.user.username
+
+    @property
+    def achievement_count(self):
+        from apps.quests.models import Achievement
+        return Achievement.objects.filter(user=self.user).count()

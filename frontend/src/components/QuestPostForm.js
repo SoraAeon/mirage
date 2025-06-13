@@ -1,22 +1,39 @@
 import React, { useState } from 'react';
 
-function QuestPostForm() {
+function QuestPostForm({ token, onPosted }) {
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [msg, setMsg] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // トークンがなければ投稿不可！
+    if (!token) {
+      setMsg('ログインが必要です');
+      return;
+    }
+
     fetch('/api/quests/quests/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`
+      },
       body: JSON.stringify({ title, description: desc })
     })
-      .then(res => res.ok ? setMsg("投稿完了！") : setMsg("投稿失敗"))
-      .then(() => {
-        setTitle('');
-        setDesc('');
-      });
+      .then(async res => {
+        if (res.ok) {
+          setMsg('投稿完了！');
+          setTitle('');
+          setDesc('');
+          if (onPosted) onPosted();
+        } else {
+          const data = await res.json();
+          setMsg('投稿失敗: ' + JSON.stringify(data));
+        }
+      })
+      .catch(() => setMsg('ネットワークエラー'));
   };
 
   return (

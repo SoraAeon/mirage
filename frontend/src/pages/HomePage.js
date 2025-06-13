@@ -36,7 +36,7 @@ function HomePage({ token, onLogin }) {
       {showSignup ? (
         <SignupForm onSignup={() => setShowSignup(false)} />
       ) : (
-        <LoginForm setToken={onLogin} />
+        <LoginForm onLogin={onLogin} />
       )}
     </div>
   );

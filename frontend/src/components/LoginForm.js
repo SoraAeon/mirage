@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function LoginForm({ setToken }) {
+function LoginForm({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
@@ -15,7 +15,7 @@ function LoginForm({ setToken }) {
       .then(res => res.json())
       .then(data => {
         if (data.auth_token) {
-          setToken(data.auth_token);
+          onLogin(data.auth_token); // ← ここ！
           setMsg('ログイン成功！');
         } else {
           setMsg('ログイン失敗');
