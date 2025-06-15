@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import SignupForm from '../components/SignupForm';
-import LoginForm from '../components/LoginForm';
+import SignupForm from '../../auth/components/SignupForm';
+import LoginForm from '../../auth/components/LoginForm';
 
 function HomePage({ token, onLogin }) {
   const [showSignup, setShowSignup] = useState(false);

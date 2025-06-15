@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import QuestCard from '../components/QuestCard';
-import boardBg from '../assets/quest-board-bg.png';
+import boardBg from '../../../assets/quest-board-bg.png';
 import '../components/RecommendedQuestsPage.css';
 
 function RecommendedQuestsPage({ token }) {

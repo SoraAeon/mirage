@@ -9,6 +9,7 @@ class UserProfile(models.Model):
     points = models.IntegerField(default=0)
     exp = models.IntegerField(default=0)
     level = models.IntegerField(default=1)
+    theme = models.ForeignKey('themes.Theme', null=True, blank=True, on_delete=models.SET_NULL)
 
     # スキルはタグ型 or 別モデルで紐付けてもOK！
     skills = models.CharField(max_length=255, blank=True, help_text="カンマ区切り")

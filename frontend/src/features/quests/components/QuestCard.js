@@ -1,5 +1,5 @@
 import React from 'react';
-import parchment from '../assets/parchment.png'; // assetsに保存した場合
+import parchment from '../../../assets/parchment.png'; // assetsに保存した場合
 import './QuestCard.css';
 
 function QuestCard({ quest, sponsored }) {
