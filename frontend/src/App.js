@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './features/root/pages/HomePage';
 import QuestsPage from './features/quests/pages/QuestPage';
 import ProfilePage from './features/profile/pages/ProfilePage';
 import RecommendedQuestsPage from './features/quests/pages/RecommendedQuestsPage';
 import ThemeSelectPage from './features/themes/pages/ThemeSelectPage';
 import JobSelectPage from './features/themes/pages/JobSelectPage';
+import ChoicesPage from './features/choices/pages/ChoicesPage';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [selectedTheme, setSelectedTheme] = useState(null);
 
+  // ログイン成功時にtokenをセットする関数
+  const handleLogin = (newToken) => {
+    setToken(newToken);
+    localStorage.setItem('token', newToken);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage token={token} onLogin={setToken} />} />
+        <Route path="/" element={<ChoicesPage token={token} onLogin={handleLogin} />} />
         <Route path="/theme-select" element={
           <ThemeSelectPage onSelect={setSelectedTheme} />
         } />

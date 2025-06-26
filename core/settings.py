@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'apps.accounts',
     'apps.choices',
+    'apps.missions',
     'apps.quests',
     'apps.themes',
 
