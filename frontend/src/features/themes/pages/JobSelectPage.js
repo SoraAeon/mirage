@@ -31,10 +31,33 @@ const jobs = [
   }
 ];
 
-export default function JobSelectPage({ selectedTheme, onSelect }) {
+export default function JobSelectPage({ selectedTheme, onSelect, onMove }) {
+  const handleClick = (jobKey) => {
+    if (onSelect) onSelect(jobKey);
+
+    // onMove があれば回転もトリガー（ジョブに応じて方向決定）
+    if (onMove) {
+      switch (jobKey) {
+        case "tank":
+          onMove("front");
+          break;
+        case "healer":
+          onMove("right");
+          break;
+        case "mage":
+          onMove("left");
+          break;
+        case "assassin":
+          onMove("back");
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
   return (
     <div style={{
-      minHeight: "100vh",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
@@ -59,7 +82,7 @@ export default function JobSelectPage({ selectedTheme, onSelect }) {
         {jobs.map((job) => (
           <button
             key={job.key}
-            onClick={() => onSelect && onSelect(job.key)}
+            onClick={() => handleClick(job.key)}
             style={{
               border: "none",
               background: "none",
@@ -82,19 +105,6 @@ export default function JobSelectPage({ selectedTheme, onSelect }) {
                 marginBottom: 10
               }}
             />
-            <span style={{
-              color: "#fff",
-              fontWeight: "bold",
-              fontSize: "1.1em",
-              marginBottom: 4,
-              letterSpacing: "0.08em"
-            }}>{job.label}</span>
-            <span style={{
-              color: "#ccc",
-              fontSize: "0.95em",
-              textAlign: "center",
-              maxWidth: 160
-            }}>{job.desc}</span>
           </button>
         ))}
       </div>

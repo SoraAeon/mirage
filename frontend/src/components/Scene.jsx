@@ -3,7 +3,6 @@ import React, { useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 // import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
-
 import Character from './Character'
 import TerrainCube from './TerrainCube'
 import StructureGroup from './StructureGroup'
@@ -28,7 +27,7 @@ function RotatingGroup({ rotation, children }) {
 
 export default function Scene({ direction, rotation, structures }) {
   return (
-    <Canvas style={{ width: '100%', height: '100%', background: '#000' }}
+    <Canvas style={{ width: '100%', height: '100%', background: '#14181e' }}
       camera={{ position: [-5, 5, 5], fov: 50 }}
       >
       <ambientLight intensity={0.5} />

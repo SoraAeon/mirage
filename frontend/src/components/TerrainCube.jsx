@@ -17,12 +17,13 @@ export default function TerrainCube({ targetRotation = [0, 0, 0] }) {
 
   // 画像テクスチャの読み込み（useMemoで1回だけ）
   const materials = useMemo(() => [
-    new THREE.MeshStandardMaterial({ map: loader.load(grassImg) }),   // right
-    new THREE.MeshStandardMaterial({ map: loader.load(stoneImg) }),   // left
-    new THREE.MeshStandardMaterial({ map: loader.load(snowImg) }),     // top
+    new THREE.MeshStandardMaterial({ map: loader.load(stoneImg) }),   // right
+    new THREE.MeshStandardMaterial({ map: loader.load(grassImg) }),   // left
+    new THREE.MeshStandardMaterial({ map: loader.load(snowImg) }),    // top
     new THREE.MeshStandardMaterial({ map: loader.load(dirtImg) }),    // bottom
+    new THREE.MeshStandardMaterial({ map: loader.load(forestImg) }),  // back
     new THREE.MeshStandardMaterial({ map: loader.load(lavaImg) }),    // front
-    new THREE.MeshStandardMaterial({ map: loader.load(forestImg) })   // back
+
   ], [])
 
   return (

@@ -18,7 +18,7 @@ export default function SceneController() {
   ])
 
   // カードクリック時の処理
-  const handleChoice = (dir) => {
+  const handleMove = (dir) => {
     setDirection(dir)
 
     // キューブの回転を更新（簡単な例）
@@ -48,7 +48,7 @@ export default function SceneController() {
         />
       </div>
       <div style={{ flex: 1 }}>
-        <ChoiceCardList onChoice={handleChoice} />
+        <ChoiceCardList onChoice={handleMove} />
       </div>
     </div>
   )

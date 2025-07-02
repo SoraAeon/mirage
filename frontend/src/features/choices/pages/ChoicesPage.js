@@ -1,36 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import ChoiceCard from '../components/ChoiceCard';
-import '../../../assets/quest-bg.png'; // ←なくてもOK（背景はCSSで指定）
+import CardButton from '../../root/components/CardButton'; 
+import FourCardGrid from '../../root/components/FourCardGrid'; 
+import LoginForm from '../../auth/components/LoginForm';
+import SignupForm from '../../auth/components/SignupForm';
 
 function ChoicesPage({ token, onLogin }) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // カードデータ取得
   useEffect(() => {
+    if (!token) {
+      setCards([
+        {
+          id: 'quest1',
+          title: 'Quest',
+          description: 'サンプル・クエスト',
+          card_type: 'quest'
+        },
+        {
+          id: 'quest2',
+          title: 'Trial',
+          description: 'まずは無料体験から',
+          card_type: 'trial_quest'
+        },
+        {
+          id: 'login',
+          title: 'Login',
+          description: 'すでにアカウントがある方はこちら',
+          card_type: 'auth_login'
+        },
+        {
+          id: 'signup',
+          title: 'Sign Up',
+          description: '今すぐ無料スタート！',
+          card_type: 'auth_signup'
+        }
+      ]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     fetch('/api/choices/user-choices/', {
-      headers: token ? { 'Authorization': `Token ${token}` } : {},
+      headers: { Authorization: `Token ${token}` },
     })
       .then(res => res.json())
       .then(data => {
-        setCards(data);
+        setCards(Array.isArray(data) ? data : data.results || []);
         setLoading(false);
       });
   }, [token]);
 
-  // カード選択時
   const handleCardSelect = async (card) => {
-    if (card.card_type === 'auth') {
-      // ログイン/Signup処理
-      onLogin && onLogin(); // 実際はログインモーダル表示など
+    if (card.card_type === 'auth_login') {
+      onLogin && onLogin();
       return;
     }
-    if (card.locked) {
-      // ロック中なら何もしない or クエスト進行画面へ
-      return;
+    if (card.card_type === 'auth_signup') {
+    // サインアップフォームやページへ遷移
+    // 例: navigate('/signup')
+    return;
     }
-    // Quest選択の場合など
+    if (card.locked) return;
     await fetch('/api/choices/select/', {
       method: 'POST',
       headers: {
@@ -39,12 +69,11 @@ function ChoicesPage({ token, onLogin }) {
       },
       body: JSON.stringify({ card_id: card.id })
     });
-    // 再取得
     fetch('/api/choices/user-choices/', {
       headers: token ? { 'Authorization': `Token ${token}` } : {},
     })
       .then(res => res.json())
-      .then(data => setCards(data));
+      .then(data => setCards(Array.isArray(data) ? data : data.results || []));
   };
 
   if (loading) return <div>Loading...</div>;
@@ -53,35 +82,41 @@ function ChoicesPage({ token, onLogin }) {
     <div
       className="choices-board"
       style={{
-        background: 'url("/quest-bg.png") center/cover no-repeat',
+        background: "#14181e",
         minHeight: '100vh',
         padding: '40px 0',
       }}
     >
-      <h1 style={{ color: "#fff", textShadow: "2px 2px 8px #222" }}>Select Your Card</h1>
-      <div
-        className="choices-grid"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gridTemplateRows: "1fr 1fr",
-          gap: "32px",
-          justifyContent: "center",
-          alignItems: "center",
-          maxWidth: "860px",
-          margin: "40px auto",
-        }}
-      >
-        {cards.map((card, idx) => (
-          <ChoiceCard
-            key={idx}
+      <h1 style={{
+        color: "#fff",
+        textShadow: "2px 2px 8px #222",
+        textAlign: "center"
+      }}>
+        Select Your Card
+      </h1>
+      <FourCardGrid
+        cards={cards}
+        renderCard={(card, idx) => (
+          <CardButton
+            key={card.id || idx}
             card={card}
-            onSelect={() => handleCardSelect(card)}
-            token={token}
-            onLogin={onLogin}
-          />
-        ))}
-      </div>
+            onClick={() => handleCardSelect(card)}
+          >
+            {card.card_type === 'auth' && (
+              <span style={{ marginTop: 18, fontWeight: "bold", color: "#f57c00" }}>
+                タップしてログイン／新規登録
+              </span>
+            )}
+          </CardButton>
+        )}
+      />
+      {/* ログインカードが選ばれた場合にフォーム出す例（オプション） */}
+      {/* cards.length === 1 && cards[0].card_type === 'auth' ? (
+        <div style={{ marginTop: 32 }}>
+          <LoginForm onLogin={onLogin} />
+          <SignupForm onSignup={onLogin} />
+        </div>
+      ) : null */}
     </div>
   );
 }
