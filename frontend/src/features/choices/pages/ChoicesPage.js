@@ -7,6 +7,7 @@ import SignupForm from '../../auth/components/SignupForm';
 function ChoicesPage({ token, onLogin }) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showSignup, setShowSignup] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -18,10 +19,10 @@ function ChoicesPage({ token, onLogin }) {
           card_type: 'quest'
         },
         {
-          id: 'quest2',
-          title: 'Trial',
-          description: 'まずは無料体験から',
-          card_type: 'trial_quest'
+          id: 'mission1',
+          title: 'Mission',
+          description: 'サンプル・ミッション',
+          card_type: 'mission'
         },
         {
           id: 'login',
@@ -56,9 +57,8 @@ function ChoicesPage({ token, onLogin }) {
       return;
     }
     if (card.card_type === 'auth_signup') {
-    // サインアップフォームやページへ遷移
-    // 例: navigate('/signup')
-    return;
+      setShowSignup(true);
+      return;
     }
     if (card.locked) return;
     await fetch('/api/choices/select/', {
@@ -77,6 +77,27 @@ function ChoicesPage({ token, onLogin }) {
   };
 
   if (loading) return <div>Loading...</div>;
+
+  // ★「showSignup」がtrueならサインアップフォームを最優先で表示
+  if (showSignup) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#14181e", paddingTop: 40 }}>
+        <SignupForm
+          onSignup={() => setShowSignup(false)} // 登録後はホームに戻る
+          onLogin={() => { setShowSignup(false); onLogin && onLogin(); }} // 「ログインへ」カードもサポート
+        />
+        <div style={{ textAlign: "center", marginTop: 24 }}>
+          <button onClick={() => setShowSignup(false)} style={{
+            fontFamily: "'Press Start 2P', cursive",
+            padding: "8px 28px",
+            borderRadius: 10,
+            border: "none",
+            marginTop: 16
+          }}>← 戻る</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

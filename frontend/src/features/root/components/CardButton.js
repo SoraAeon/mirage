@@ -3,10 +3,15 @@ import React from "react";
 const ICONS = {
   quest: "/icons/quest.png",
   trial_quest: "/icons/trial.png",
-  mission: "/assets/icons/mission.png",
+  mission: "/icons/mission.png",
   auth_login: "icons/login.png",
   auth_signup: "icons/signup.png",
-  default: "/assets/icons/default.png"
+  login: "icons/login.png",
+  signup: "icons/signup.png",
+  email: "icons/email.png",
+  password: "icons/password.png",
+  username: "icons/username.png",
+  submit: "icons/submit.png",
 };
 
 // 1枚のカードの見た目を統一
@@ -40,7 +45,7 @@ export default function CardButton({ card, onClick, children }) {
           fontSize: "2em",
           color: "#fff",
           textShadow: "2px 2px 6px #222",
-          marginBottom: 30,
+          marginBottom: 20,
           textAlign: "center"
         }}
       >
@@ -52,7 +57,7 @@ export default function CardButton({ card, onClick, children }) {
           fontSize: "1em",
           color: "#808080",
           textAlign: "center",
-          minHeight: 32,
+          minHeight: 40,
           fontFamily: "'Press Start 2P', cursive"
         }}
       >
