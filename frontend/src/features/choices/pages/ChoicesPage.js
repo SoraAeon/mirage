@@ -123,11 +123,6 @@ function ChoicesPage({ token, onLogin }) {
             card={card}
             onClick={() => handleCardSelect(card)}
           >
-            {card.card_type === 'auth' && (
-              <span style={{ marginTop: 18, fontWeight: "bold", color: "#f57c00" }}>
-                タップしてログイン／新規登録
-              </span>
-            )}
           </CardButton>
         )}
       />

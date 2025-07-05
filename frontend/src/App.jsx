@@ -8,6 +8,7 @@ import RecommendedQuestsPage from './features/quests/pages/RecommendedQuestsPage
 import ThemeSelectPage from './features/themes/pages/ThemeSelectPage';
 import JobSelectPage from './features/themes/pages/JobSelectPage';
 import ChoicesPage from './features/choices/pages/ChoicesPage';
+import HomePage from './features/root/pages/HomePage';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -42,7 +43,8 @@ function App() {
         {/* 下半分：選択肢や画面UI */}
         <div style={{ flex: 6, minHeight: 0, overflowY: 'hidden' }}>
           <Routes>
-            <Route path="/" element={<ChoicesPage token={token} onLogin={handleLogin} />} />
+            <Route path="/" element={<HomePage token={token} onLogin={handleLogin} />} />
+            <Route path="/choices" element={<ChoicesPage token={token} onLogin={handleLogin} />} />
             <Route path="/theme-select" element={<ThemeSelectPage onSelect={setSelectedTheme} />} />
             <Route path="/job-select" element={<JobSelectPage onMove={handleMove} selectedTheme={selectedTheme} token={token} />} />
             <Route path="/quests" element={<QuestsPage token={token} />} />

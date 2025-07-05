@@ -105,15 +105,13 @@ export default function SignupForm({ onSignup, onLogin }) {
 
   return (
     <div>
-      <h2 style={{
+      <h1 style={{
         color: "#fff",
-        fontFamily: "'Press Start 2P', cursive",
-        textAlign: "center",
-        letterSpacing: "0.04em",
-        marginBottom: 24
+        textShadow: "2px 2px 8px #222",
+        textAlign: "center"
       }}>
         Sign Up
-      </h2>
+      </h1>
       <FourCardGrid
         cards={signupSteps}
         renderCard={(card, idx) => (
