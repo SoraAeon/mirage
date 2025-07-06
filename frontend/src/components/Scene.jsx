@@ -1,6 +1,7 @@
 // Scene.jsx
 import React, { useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import Character from './Character'
 import TerrainCube from './TerrainCube'
@@ -31,7 +32,7 @@ export default function Scene({ direction, rotation, structures }) {
       >
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 5]} />
-      {/* <OrbitControls /> */}
+      <OrbitControls />
 
       {/* 🔁 ここが動く */}
       <RotatingGroup rotation={rotation}>

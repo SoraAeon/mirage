@@ -16,6 +16,7 @@ export default function LoginForm({ onLogin, onSignup }) {
   const loginSteps = [
     { id: 'username', title: 'Name', description: 'ユーザー名を入力', card_type: 'username' },
     { id: 'password', title: 'Password', description: 'パスワード', card_type: 'password' },
+    { id: 'forgot', title: 'Forget?', description: 'パスワードを再発行', card_type: 'password' },
     allFieldsFilled
       ? { id: 'submit', title: 'Login', description: 'ログイン', card_type: 'submit' }
       : { id: 'signup', title: 'or Sign Up', description: 'アカウント作成へ', card_type: 'signup' },

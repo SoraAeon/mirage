@@ -2,7 +2,7 @@ import React from 'react';
 import FourCardGrid from './FourCardGrid';
 import CardButton from './CardButton';
 
-export default function Choices({ cards, onChangeMode, onQuestSelect }) {
+export default function Choices({ cards, onChangeMode, onCardSelect, onQuestSelect }) {
   // 分岐用ハンドラ
   const handlers = {
     auth_signup: () => onChangeMode && onChangeMode('signup'),
@@ -14,12 +14,15 @@ export default function Choices({ cards, onChangeMode, onQuestSelect }) {
 
   // カードクリック時
   const handleCardClick = (card) => {
-    const handler = handlers[card.card_type];
-    if (handler) handler(card);
-    else {
-      // 未定義タイプは何もしない or デバッグ用
-      console.log("Unhandled card_type:", card.card_type);
-    }
+    onCardSelect && onCardSelect(card);
+
+    if (onQuestSelect) onQuestSelect(card);
+    // 必要に応じてtypeごとの分岐
+    if (card.card_type === 'auth_signup') {
+      onChangeMode && onChangeMode('signup');
+    } else if (card.card_type === 'auth_login') {
+      onChangeMode && onChangeMode('login');
+    } // ...他も追加
   };
 
   return (

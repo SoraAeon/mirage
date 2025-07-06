@@ -16,10 +16,11 @@ const ICONS = {
 
 // 1枚のカードの見た目を統一
 export default function CardButton({ card, onClick, children }) {
-  const iconSrc = ICONS[card.card_type] || ICONS.default;
+  const iconSrc = card.icon || ICONS[card.card_type] || ICONS.default;
 
   return (
     <button
+      key={card.id}
       onClick={onClick}
       style={{
         background: 'url("/quest-bg.png") center/cover no-repeat, #222',

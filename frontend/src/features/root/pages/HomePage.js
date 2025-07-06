@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Scene from '../../../components/Scene';
 import Choices from '../components/Choices';
 import SignupForm from '../../auth/components/SignupForm';
 import LoginForm from '../../auth/components/LoginForm';
@@ -6,6 +7,9 @@ import LoginForm from '../../auth/components/LoginForm';
 export default function HomePage() {
   const [mode, setMode] = useState('choices');
   const [selectedQuest, setSelectedQuest] = useState(null);
+  const [cubeRotation, setCubeRotation] = useState([0, 0, 0]);
+  // right, left, top, bottom, back, front
+  const [faceIcons, setFaceIcons] = useState([null, null, null, null, null, null]); 
 
   // 未ログインならこのカード配列
   const cards = [
@@ -18,6 +22,29 @@ export default function HomePage() {
   if (mode === 'signup')   return <SignupForm onLogin={() => setMode('choices')} />;
   if (mode === 'login')    return <LoginForm  onSignup={() => setMode('choices')} />;
   if (mode === 'quest')    return <div> {/* ここにQuest表示・選択処理 */} </div>;
+
+  // カード選択で
+  function handleCardSelect(card) {
+  if (card.icon) {
+    const updatedIcons = [...faceIcons];
+    updatedIcons[0] = card.icon; // 右面にセット（必要なら今後他の面も）
+    setFaceIcons(updatedIcons);
+  }
+  // 他のロジックも分岐で呼んでOK
+}
+
+  // Submit/Clearで回転
+  function handleClear() {
+    // 右回転（y軸でMath.PI/2加算）
+    setCubeRotation(([x, y, z]) => [x, y + Math.PI / 2, z]);
+    // 次のカード・次の面のロジックもここで
+  }
+
+  // シーンに渡す
+  <Scene
+    rotation={cubeRotation}
+    faceIcons={faceIcons}
+  />
 
   // ホーム（選択肢カード）
   return (
@@ -32,6 +59,7 @@ export default function HomePage() {
       <Choices
         cards={cards}
         onChangeMode={setMode}
+        onCardSelect={handleCardSelect}
         onQuestSelect={(card) => { setSelectedQuest(card); setMode('quest'); }}
       />
     </div>
