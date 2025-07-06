@@ -1,55 +1,88 @@
+import React, { useEffect, useState } from 'react';
 import { useMachine } from '@xstate/react';
-import { choicesMachine } from '../machines/choicesMachine.js';
+import { choicesMachine, getCardsForState } from '../machines/choicesMachine';
 import FourCardGrid from '../../root/components/FourCardGrid';
 import CardButton from '../../root/components/CardButton';
 
 export default function ChoicesGrid(props) {
   const [state, send] = useMachine(choicesMachine);
-  const { username, email, password } = state.context;
-  const signupFieldsFilled = username && email && password;
+  // カードはstate.valueから自動取得
+  const cards = getCardsForState(state.value, state.context);
+  // 入力状態：どのカードか＋その値
+  const [selectedCardId, setSelectedCardId] = useState(null);
+  const [inputValue, setInputValue] = useState('');
 
-  // 「状態ごとにカードセットを生成」
-  let cards = [];
-  if (state.matches('unauth')) {
-    cards = [
-      { id: 'quest1', title: 'Quest', description: 'サンプル・クエスト', card_type: 'quest' },
-      { id: 'mission1', title: 'Mission', description: 'サンプル・ミッション', card_type: 'mission' },
-      { id: 'login', title: 'Login', description: 'アカウントがある方はこちら', card_type: 'auth_login' },
-      { id: 'signup', title: 'Sign Up', description: '今すぐ無料スタート！', card_type: 'auth_signup' } 
-    ]; // 未ログインのときのカード4枚
-  }
-  if (state.matches('signup')) {
-    cards = [
-      { id: 'username', title: 'Name', description: '好きな名前を入力', card_type: 'username' },
-      { id: 'email', title: 'Mail Address', description: 'ご連絡用メール', card_type: 'email' },
-      { id: 'password', title: 'Password', description: '8文字以上', card_type: 'password' },
-      signupFieldsFilled
-        ? { id: 'submit', title: 'Submit', description: '全て入力して登録', card_type: 'submit' }
-        : { id: 'login', title: 'or Login', description: 'アカウントをお持ちの方', card_type: 'login' }
-    ]; // サインアップ時のカード4枚
-  }
-  if (state.matches('main')) {
-    // cards = [ ... ]; // ログイン済みのときのカード4枚
-  }
-
-  // どのカードがクリックされたときどう動くかもここで
   const handleCardClick = (card) => {
+    // 入力系カードなら選択状態だけ切り替える
+    if (['username', 'email', 'password'].includes(card.card_type)) {
+      setSelectedCardId(card.id);
+      setInputValue(state.context[card.card_type] || '');
+      return;
+    }
+    // それ以外はそのままsend
     if (card.card_type === 'auth_login') send({ type: 'LOGIN' });
     if (card.card_type === 'auth_signup') send({ type: 'SIGNUP' });
-    // ...他も同様
+    if (card.card_type === 'submit') send({ type: 'SUBMIT' });
+    // ...他も
   };
 
-  // 「描画」はFourCardGridに全て任せる
+  // 入力フォームで値が変わったとき
+  const handleInputChange = (e, card_type) => {
+    setInputValue(e.target.value);
+  };
+
+  // エンター or ボタンで値をmachineに渡す
+  const handleInputSubmit = (card) => {
+    send({ type: `SET_${card.card_type.toUpperCase()}`, value: inputValue });
+    setSelectedCardId(null); // 入力終わったらフォームを消す
+    setInputValue('');
+  };
+
   return (
-    <FourCardGrid
-      cards={cards}
-      renderCard={(card, idx) => (
-        <CardButton
-          key={card.id}
-          card={card}
-          onClick={() => handleCardClick(card)}
-        />
-      )}
-    />
+    <div
+      className="choices-board"
+      style={{
+        background: "#14181e",
+        minHeight: '100vh',
+        padding: '40px 0',
+      }}
+    >
+      <h1 style={{
+        color: "#fff",
+        textShadow: "2px 2px 8px #222",
+        textAlign: "center"
+      }}>
+        Select Your Card
+      </h1>
+      <FourCardGrid
+        cards={cards}
+        renderCard={(card, idx) => (
+          <CardButton
+            key={card.id}
+            card={card}
+            onClick={() => handleCardClick(card)}
+          >
+            {/* ↓このchildrenで入力UIを出す */}
+            {selectedCardId === card.id && (
+              <div style={{ marginTop: 16, width: "100%", textAlign: "center" }}>
+                <input
+                  style={{
+                    padding: "6px 10px",
+                    borderRadius: 7,
+                    marginBottom: 8,
+                    width: "80%"
+                  }}
+                  type={card.card_type === 'password' ? 'password' : (card.card_type === 'email' ? 'email' : 'text')}
+                  value={inputValue}
+                  onChange={e => handleInputChange(e, card.card_type)}
+                  onKeyDown={e => { if (e.key === "Enter") handleInputSubmit(card); }}
+                  autoFocus
+                />
+              </div>
+            )}
+          </CardButton>
+        )}
+      />
+    </div>
   );
 }

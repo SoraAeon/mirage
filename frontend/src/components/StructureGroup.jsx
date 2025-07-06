@@ -9,13 +9,13 @@ import tree03Img from '../assets/structure/tree03.png'
 export default function StructureGroup() {
   return (
     <>
-      {/* Front face */}
+      {/* Right face */}
       <Structure img={tree01Img} position={[0, 0, 2]} rotation={[-5, 0, 0.2]} />
 
-      {/* Right face */}
+      {/* Left face */}
       <Structure img={tree02Img} position={[-2, 0, 0]} rotation={[0, Math.PI / 10, -5]} />
 
-      {/* Left face */}
+      {/* Top face */}
       <Structure img={tree03Img} position={[1, 2, 0]} rotation={[0, -Math.PI / 1, 0]} />
       <Structure img={tree03Img} position={[-1, 2, 0]} rotation={[0, -Math.PI / 1, 0]} />
 
