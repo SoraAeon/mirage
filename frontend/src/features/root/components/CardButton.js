@@ -1,17 +1,29 @@
 import React from "react";
 
+import questIcon from '../../../assets/icons/quest.png';
+import trialQuestIcon from '../../../assets/icons/trial.png';
+import missionIcon from '../../../assets/icons/mission.png';
+import authLoginIcon from '../../../assets/icons/login.png';
+import authSignupIcon from '../../../assets/icons/signup.png';
+import loginIcon from '../../../assets/icons/login.png';      // ログインとauth_loginは同じでOK
+import signupIcon from '../../../assets/icons/signup.png';    // サインアップとauth_signupも同じでOK
+import emailIcon from '../../../assets/icons/email.png';
+import passwordIcon from '../../../assets/icons/password.png';
+import usernameIcon from '../../../assets/icons/username.png';
+import submitIcon from '../../../assets/icons/submit.png';
+
 const ICONS = {
-  quest: "/icons/quest.png",
-  trial_quest: "/icons/trial.png",
-  mission: "/icons/mission.png",
-  auth_login: "icons/login.png",
-  auth_signup: "icons/signup.png",
-  login: "icons/login.png",
-  signup: "icons/signup.png",
-  email: "icons/email.png",
-  password: "icons/password.png",
-  username: "icons/username.png",
-  submit: "icons/submit.png",
+  quest: questIcon,
+  trial_quest: trialQuestIcon,
+  mission: missionIcon,
+  auth_login: authLoginIcon,
+  auth_signup: authSignupIcon,
+  login: loginIcon,
+  signup: signupIcon,
+  email: emailIcon,
+  password: passwordIcon,
+  username: usernameIcon,
+  submit: submitIcon,
 };
 
 // 1枚のカードの見た目を統一
